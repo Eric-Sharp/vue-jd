@@ -1,3 +1,6 @@
+#基于vue的电商小项目，仅供本人学习只用。
+
+
 # jingdong
 
 ## Project setup
@@ -27,3 +30,5 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
