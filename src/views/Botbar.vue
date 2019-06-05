@@ -76,8 +76,8 @@ export default {
       min-width:18px;
       border-radius: 9px;
       background-color: red;
-      bottom :30px;
-      left: 7.1rem;
+      bottom :35px;
+      left: 70%;
       z-index: 10001;
       color:#fff;
       font-size:14px;

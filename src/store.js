@@ -3,10 +3,10 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+let store= new Vuex.Store({
   state: {
     token:'',
-    cartArray:[{title:'华为',count:2,id:1},{title:'小米',count:1,id:2}]
+    cartArray:JSON.parse(localStorage.getItem('cartArray')||'[]')
   },
   mutations: {
       settoken(state,token){
@@ -59,3 +59,8 @@ export default new Vuex.Store({
     }
   }
 })
+store.subscribe((mutations,state)=>{
+  localStorage.setItem('cartArray',JSON.stringify(state.cartArray))
+})
+
+export default store

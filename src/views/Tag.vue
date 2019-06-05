@@ -13,18 +13,28 @@
                 <ul>
                     <li v-for='(item ,i) in tags' :key="i"  >
                         <img :src="item.image" alt="">
-                        <p>{{item.label}}<i class="cubeic-add" @click='increase(item)'></i></p>
+                        <p>{{item.label}}<i class="cubeic-add" @click='increase($event,item)'></i></p>
                     </li>
 
                 </ul>
-
         </cube-scroll>
+        <transition @before-enter='beforeEnter' @enter='enter' @afterEnter='afterEnter'>
+            <div ref= 'ball' class="ball" v-show='show'>
+                <div class='inner' ref='inner'>
+                <i class="cubeic-add"></i>
+                </div>
+            </div>
+        
+        </transition>
+
     </div>
 </template>
 <script>
 export default {
     data(){
         return{
+            addButton:'',
+            show:false,
             // 右侧数据mock获取
             tags:[],
             // 左侧数据
@@ -63,9 +73,36 @@ export default {
 
     },
     methods:{
-        increase(item){
+        beforeEnter(){
+            const location = this.addButton.getBoundingClientRect()
+            const x=  location.x - 0.7*window.innerWidth
+            const y= location.y- window.innerHeight+60
+            this.$refs.ball.style.transform=`translate(0px,${y}px)`
+            this.$refs.inner.style.transform=`translate(${x}px,0px)`
+
+        },
+        enter(){
+            this.$refs.ball.style.display='block'
+            // 触发重绘
+            document.body.offsetWidth
+
+
+            this.$refs.ball.style.transform=`translate(0px,0px)`
+             this.$refs.inner.style.transform=`translate(0px,0px)`
+             
+        },
+        afterEnter(){
+            this.$refs.ball.style.display='none'
+            this.show=false
+        },
+        increase(e,item){
+            
             var data={title:item.label,count:1}
             this.$store.commit('addCartArray',data)
+            this.addButton=e.target
+           
+            this.show=true
+
         },
         // 点击左侧标签触发事件，遍历更改class并请求右侧数据
         handle(index,id){
@@ -96,6 +133,18 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+    .ball{
+        transition:all 1s cubic-bezier(0.49,-0.29,0.75,0.41);
+        position:fixed;
+        color:red;
+        left:68%;
+        bottom:40px;
+        z-index:10003;
+        .inner{
+            transition:all 1s linear
+        }
+    }
+
     i{margin-left:5px}
     .leftScroll{
         float: left;
